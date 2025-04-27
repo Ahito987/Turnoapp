@@ -1,71 +1,16 @@
-// Variables
-const menuToggle = document.getElementById('menuToggle');
-const menu = document.getElementById('menu');
-const sections = document.querySelectorAll('main section');
-
 const formTurno = document.getElementById('formTurno');
-const formFestivo = document.getElementById('formFestivo');
-const turnosCards = document.getElementById('turnosCards');
-const calendarioMes = document.getElementById('calendarioMes');
+const listadoTurnos = document.getElementById('listadoTurnos').querySelector('tbody');
+const buscar = document.getElementById('buscar');
+const menuBtn = document.getElementById('menuBtn');
+const menu = document.getElementById('menu');
+const calendar = document.getElementById('calendar');
 
 let turnos = JSON.parse(localStorage.getItem('turnos')) || [];
-let festivos = JSON.parse(localStorage.getItem('festivos')) || [];
 
-// Funciones
-menuToggle.addEventListener('click', () => {
+menuBtn.addEventListener('click', () => {
   menu.classList.toggle('hidden');
 });
 
-function mostrarSeccion(id) {
-  sections.forEach(section => section.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
-  menu.classList.add('hidden');
-}
-
-function renderizarTurnos() {
-  turnosCards.innerHTML = '';
-  turnos.forEach(turno => {
-    const card = document.createElement('div');
-    card.className = 'turno-card';
-    card.innerHTML = `
-      <strong>${formatearFecha(turno.fecha)}</strong>
-      <p><strong>${turno.hora} – ${turno.tipo}</strong></p>
-      <p>${turno.nota || ''}</p>
-    `;
-    turnosCards.appendChild(card);
-  });
-}
-
-function renderizarCalendario() {
-  calendarioMes.innerHTML = '';
-  const diasMes = 31;
-  for (let dia = 1; dia <= diasMes; dia++) {
-    const fecha = `2025-04-${String(dia).padStart(2, '0')}`;
-    const div = document.createElement('div');
-    div.className = 'dia';
-
-    const turno = turnos.find(t => t.fecha === fecha);
-    const festivo = festivos.find(f => f.fecha === fecha);
-
-    if (festivo) {
-      div.classList.add('festivo');
-      div.innerHTML = `<strong>${dia}</strong><br><small>${festivo.descripcion}</small>`;
-    } else if (turno) {
-      div.innerHTML = `<strong>${dia}</strong><br><small>${turno.tipo.charAt(0)}</small>`;
-    } else {
-      div.innerHTML = `<strong>${dia}</strong>`;
-    }
-
-    calendarioMes.appendChild(div);
-  }
-}
-
-function formatearFecha(fecha) {
-  const [a, m, d] = fecha.split('-');
-  return `${d}/${m}/${a}`;
-}
-
-// Eventos
 formTurno.addEventListener('submit', (e) => {
   e.preventDefault();
   const nuevoTurno = {
@@ -81,18 +26,84 @@ formTurno.addEventListener('submit', (e) => {
   renderizarCalendario();
 });
 
-formFestivo.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const nuevoFestivo = {
-    fecha: document.getElementById('fechaFestivo').value,
-    descripcion: document.getElementById('descripcionFestivo').value
-  };
-  festivos.push(nuevoFestivo);
-  localStorage.setItem('festivos', JSON.stringify(festivos));
-  formFestivo.reset();
-  renderizarCalendario();
-});
+function renderizarTurnos() {
+  listadoTurnos.innerHTML = '';
+  let term = buscar.value.toLowerCase();
 
-// Inicializar
+  turnos
+    .filter(t => t.fecha.includes(term) || t.tipo.toLowerCase().includes(term))
+    .sort((a, b) => new Date(a.fecha) - new Date(b.fecha))
+    .forEach((turno, index) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${formatearFecha(turno.fecha)}</td>
+        <td>${turno.hora}</td>
+        <td>${turno.tipo}</td>
+        <td>${turno.nota || ''}</td>
+        <td><button class="delete-btn" onclick="eliminarTurno(${index})">🗑️</button></td>
+      `;
+      listadoTurnos.appendChild(row);
+    });
+}
+
+function eliminarTurno(index) {
+  if (confirm('¿Eliminar este turno?')) {
+    turnos.splice(index, 1);
+    localStorage.setItem('turnos', JSON.stringify(turnos));
+    renderizarTurnos();
+    renderizarCalendario();
+  }
+}
+
+function formatearFecha(fecha) {
+  const [a, m, d] = fecha.split('-');
+  return `${d}/${m}/${a}`;
+}
+
+buscar.addEventListener('input', renderizarTurnos);
+
+function renderizarCalendario() {
+  calendar.innerHTML = '';
+  let grouped = {};
+
+  turnos.forEach(t => {
+    let [year, month, day] = t.fecha.split('-');
+    if (!grouped[month]) grouped[month] = [];
+    grouped[month].push({ day, tipo: t.tipo });
+  });
+
+  for (const month in grouped) {
+    const mesDiv = document.createElement('div');
+    mesDiv.innerHTML = `<h3>${nombreMes(month)}</h3>`;
+
+    grouped[month].forEach(({ day, tipo }) => {
+      const item = document.createElement('div');
+      item.innerHTML = `<strong>${day}</strong>: ${abreviaturaTurno(tipo)}`;
+      if (tipo === 'Vacaciones' || tipo === 'Festivo') {
+        item.classList.add('festivo');
+      }
+      mesDiv.appendChild(item);
+    });
+
+    calendar.appendChild(mesDiv);
+  }
+}
+
+function nombreMes(m) {
+  return ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'][parseInt(m)-1];
+}
+
+function abreviaturaTurno(tipo) {
+  switch (tipo) {
+    case 'Mañana': return 'M';
+    case 'Tarde': return 'T';
+    case 'Noche': return 'N';
+    case 'Libranza': return 'L';
+    case 'Vacaciones': return 'V';
+    default: return tipo;
+  }
+}
+
 renderizarTurnos();
 renderizarCalendario();
