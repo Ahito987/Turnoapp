@@ -1,102 +1,98 @@
-const form = document.getElementById("formTurno");
-const tabla = document.querySelector("#tablaTurnos tbody");
-const calendario = document.getElementById("calendario");
-const busqueda = document.getElementById("busqueda");
+// Variables
+const menuToggle = document.getElementById('menuToggle');
+const menu = document.getElementById('menu');
+const sections = document.querySelectorAll('main section');
 
-let turnos = JSON.parse(localStorage.getItem("turnos")) || [];
+const formTurno = document.getElementById('formTurno');
+const formFestivo = document.getElementById('formFestivo');
+const turnosCards = document.getElementById('turnosCards');
+const calendarioMes = document.getElementById('calendarioMes');
 
-document.getElementById("menuToggle").onclick = () => {
-  document.getElementById("sideMenu").classList.toggle("hidden");
-};
+let turnos = JSON.parse(localStorage.getItem('turnos')) || [];
+let festivos = JSON.parse(localStorage.getItem('festivos')) || [];
 
-function guardar() {
-  localStorage.setItem("turnos", JSON.stringify(turnos));
-}
+// Funciones
+menuToggle.addEventListener('click', () => {
+  menu.classList.toggle('hidden');
+});
 
 function mostrarSeccion(id) {
-  document.querySelectorAll("main section").forEach(s => s.classList.remove("visible"));
-  document.getElementById(id).classList.add("visible");
-  if (id === "calendario") generarCalendario();
+  sections.forEach(section => section.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  menu.classList.add('hidden');
 }
 
-form.onsubmit = e => {
-  e.preventDefault();
-  const turno = {
-    fecha: form.fecha.value,
-    hora: form.hora.value,
-    tipo: form.tipo.value,
-    nota: form.nota.value
-  };
-  turnos.push(turno);
-  guardar();
-  form.reset();
-  mostrarTurnos();
-};
-
-function mostrarTurnos() {
-  tabla.innerHTML = "";
-  turnos.forEach((t, i) => {
-    const row = tabla.insertRow();
-    row.innerHTML = `
-      <td>${t.fecha}</td>
-      <td>${t.tipo}</td>
-      <td>${t.nota || ""}</td>
-      <td><button onclick="borrar(${i})">🗑️</button></td>
+function renderizarTurnos() {
+  turnosCards.innerHTML = '';
+  turnos.forEach(turno => {
+    const card = document.createElement('div');
+    card.className = 'turno-card';
+    card.innerHTML = `
+      <strong>${formatearFecha(turno.fecha)}</strong>
+      <p><strong>${turno.hora} – ${turno.tipo}</strong></p>
+      <p>${turno.nota || ''}</p>
     `;
+    turnosCards.appendChild(card);
   });
 }
 
-function borrar(index) {
-  if (confirm("¿Eliminar este turno?")) {
-    turnos.splice(index, 1);
-    guardar();
-    mostrarTurnos();
-  }
-}
+function renderizarCalendario() {
+  calendarioMes.innerHTML = '';
+  const diasMes = 31;
+  for (let dia = 1; dia <= diasMes; dia++) {
+    const fecha = `2025-04-${String(dia).padStart(2, '0')}`;
+    const div = document.createElement('div');
+    div.className = 'dia';
 
-busqueda.oninput = () => {
-  const filtro = busqueda.value.toLowerCase();
-  const filas = tabla.querySelectorAll("tr");
-  filas.forEach(f => {
-    f.style.display = f.textContent.toLowerCase().includes(filtro) ? "" : "none";
-  });
-};
+    const turno = turnos.find(t => t.fecha === fecha);
+    const festivo = festivos.find(f => f.fecha === fecha);
 
-function generarCalendario() {
-  calendario.innerHTML = "";
-  const hoy = new Date();
-  const año = hoy.getFullYear();
-
-  for (let mes = 0; mes < 12; mes++) {
-    const divMes = document.createElement("div");
-    divMes.innerHTML = `<h3>${new Date(año, mes).toLocaleString("es", { month: "long" }).toUpperCase()}</h3>`;
-    const grid = document.createElement("div");
-    grid.style.display = "grid";
-    grid.style.gridTemplateColumns = "repeat(7, 1fr)";
-    const diasMes = new Date(año, mes + 1, 0).getDate();
-
-    for (let dia = 1; dia <= diasMes; dia++) {
-      const fechaStr = `${año}-${String(mes + 1).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
-      const divDia = document.createElement("div");
-      const turno = turnos.find(t => t.fecha === fechaStr);
-      const clase = turno ? (turno.tipo === "V" ? "vacaciones" : turno.tipo === "D" ? "festivo" : "") : "";
-
-      divDia.innerHTML = `<strong>${dia}</strong><br><span class="turno-letra ${clase}">${turno ? turno.tipo : ""}</span>`;
-      divDia.style.border = "1px solid #ccc";
-      divDia.style.padding = "0.5rem";
-      divDia.style.textAlign = "center";
-      if (fechaStr === hoy.toISOString().slice(0, 10)) divDia.classList.add("dia-actual");
-      grid.appendChild(divDia);
+    if (festivo) {
+      div.classList.add('festivo');
+      div.innerHTML = `<strong>${dia}</strong><br><small>${festivo.descripcion}</small>`;
+    } else if (turno) {
+      div.innerHTML = `<strong>${dia}</strong><br><small>${turno.tipo.charAt(0)}</small>`;
+    } else {
+      div.innerHTML = `<strong>${dia}</strong>`;
     }
 
-    divMes.appendChild(grid);
-    calendario.appendChild(divMes);
+    calendarioMes.appendChild(div);
   }
 }
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
-    .then(() => console.log('Service Worker registrado'))
-    .catch(err => console.error('Error registrando SW:', err));
+
+function formatearFecha(fecha) {
+  const [a, m, d] = fecha.split('-');
+  return `${d}/${m}/${a}`;
 }
 
-mostrarTurnos();
+// Eventos
+formTurno.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const nuevoTurno = {
+    fecha: document.getElementById('fecha').value,
+    hora: document.getElementById('hora').value,
+    tipo: document.getElementById('tipo').value,
+    nota: document.getElementById('nota').value
+  };
+  turnos.push(nuevoTurno);
+  localStorage.setItem('turnos', JSON.stringify(turnos));
+  formTurno.reset();
+  renderizarTurnos();
+  renderizarCalendario();
+});
+
+formFestivo.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const nuevoFestivo = {
+    fecha: document.getElementById('fechaFestivo').value,
+    descripcion: document.getElementById('descripcionFestivo').value
+  };
+  festivos.push(nuevoFestivo);
+  localStorage.setItem('festivos', JSON.stringify(festivos));
+  formFestivo.reset();
+  renderizarCalendario();
+});
+
+// Inicializar
+renderizarTurnos();
+renderizarCalendario();
