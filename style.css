@@ -1,130 +1,114 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #fff;
+  background-color: #d4efdf;
   color: #333;
 }
 
 header {
-  background: #54815F;
+  background-color: #54815F;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 1rem;
 }
-
-.menu-btn {
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.app-title {
-  text-align: center;
+.header-content{
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content:center;
+  text-align: center;
+  margin:0 auto;
 }
 
-.app-title img {
-  width: 50px;
+header img {
+  width: 38px;
+  heigth: 42px
+}
+.company-name{
+margin:0;
+}
+.menu-toggle {
+  font-size: 2rem;
+  cursor: pointer;
+  float:left;
 }
 
-.app-title h1 {
-  margin: 0;
-  font-size: 1.75rem;
-  letter-spacing: 2px;
+nav {
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ccc;
 }
 
-nav#sideMenu {
-  position: absolute;
-  background: #eee;
-  width: 200px;
-  top: 0;
-  left: 0;
-  height: 100%;
-  padding-top: 5rem;
-  transition: transform 0.3s ease-in-out;
-}
-
-nav#sideMenu.hidden {
-  transform: translateX(-100%);
-}
-
-nav#sideMenu ul {
+nav ul {
   list-style: none;
   padding: 0;
 }
 
-nav#sideMenu li {
+nav li {
   padding: 1rem;
-  border-bottom: 1px solid #ccc;
   cursor: pointer;
+  border-bottom: 1px solid #ccc;
+}
+
+nav li:hover {
+  background-color: #ccc;
+}
+
+.hidden {
+  display: none;
 }
 
 main {
   padding: 1rem;
 }
 
-section {
-  display: none;
-}
-
-section.visible {
-  display: block;
-}
-
 form {
-  display: grid;
-  gap: 1rem;
-  max-width: 500px;
-  margin: auto;
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 input, select, textarea {
   width: 100%;
+  margin-bottom: 1rem;
   padding: 0.5rem;
 }
 
 button {
-  padding: 0.75rem;
-  background: #E5A91E;
+  background-color: #E5A91E;
   color: white;
   border: none;
+  padding: 0.8rem;
+  width: 100%;
+  border-radius: 0.5rem;
   cursor: pointer;
 }
 
 button:hover {
-  background: #54815F;
+  background-color: #54815F;
 }
 
-#tablaTurnos {
-  width: 100%;
-  border-collapse: collapse;
+.turno-card {
+  background: #fff;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#calendarioMes {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
   margin-top: 1rem;
-  max-height: 300px;
-  overflow-y: auto;
 }
 
-#tablaTurnos th, #tablaTurnos td {
-  padding: 0.75rem;
+.dia {
+  background: white;
+  padding: 1rem;
+  text-align: center;
   border: 1px solid #ccc;
+  border-radius: 0.5rem;
 }
 
 .festivo {
-  background-color: #ffe5e5;
-  color: red;
-}
-
-.turno-letra {
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-.vacaciones {
-  color: green;
-}
-
-.dia-actual {
-  background-color: #e0f0e0;
+  background: #f88;
 }
