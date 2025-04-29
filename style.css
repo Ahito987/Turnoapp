@@ -1,54 +1,65 @@
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
-  background: #eef2f3;
+  font-family: Arial, sans-serif;
+  background: #fff;
   color: #333;
 }
 
 header {
-  background-color: #54815F;
+  background: #54815F;
   color: white;
-  padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 1rem;
 }
 
-#logo {
-  height: 40px;
-}
-
-#menuBtn {
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: white;
+.menu-btn {
+  font-size: 1.5rem;
   cursor: pointer;
 }
 
-nav {
-  background: #54815F;
+.app-title {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-nav ul {
+.app-title img {
+  width: 50px;
+}
+
+.app-title h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  letter-spacing: 2px;
+}
+
+nav#sideMenu {
+  position: absolute;
+  background: #eee;
+  width: 200px;
+  top: 0;
+  left: 0;
+  height: 100%;
+  padding-top: 5rem;
+  transition: transform 0.3s ease-in-out;
+}
+
+nav#sideMenu.hidden {
+  transform: translateX(-100%);
+}
+
+nav#sideMenu ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
-nav ul li {
+nav#sideMenu li {
   padding: 1rem;
-  border-bottom: 1px solid #ffffff55;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-}
-
-.hidden {
-  display: none;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
 }
 
 main {
@@ -56,86 +67,64 @@ main {
 }
 
 section {
-  margin-bottom: 2rem;
+  display: none;
+}
+
+section.visible {
+  display: block;
 }
 
 form {
-  background: white;
-  padding: 1rem;
-  border-radius: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 1rem;
+  max-width: 500px;
+  margin: auto;
 }
 
 input, select, textarea {
+  width: 100%;
   padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 0.4rem;
 }
 
 button {
-  background-color: #E5A91E;
+  padding: 0.75rem;
+  background: #E5A91E;
   color: white;
   border: none;
-  padding: 0.8rem;
-  border-radius: 0.5rem;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #54815F;
+  background: #54815F;
 }
 
-#tablaContainer {
-  max-height: 400px;
-  overflow-y: scroll;
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-table {
+#tablaTurnos {
   width: 100%;
-  border-collapse: separate;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-th {
-  background-color: #54815F;
-  color: white;
-  padding: 0.8rem;
-}
-
-td {
-  padding: 0.5rem;
-  border-bottom: 1px solid #ddd;
-}
-
-.delete-btn {
-  background: none;
-  border: none;
-  color: red;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-#buscar {
-  width: 100%;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
+#tablaTurnos th, #tablaTurnos td {
+  padding: 0.75rem;
   border: 1px solid #ccc;
 }
 
-#calendar {
-  background: white;
-  padding: 1rem;
-  border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  min-height: 300px;
+.festivo {
+  background-color: #ffe5e5;
+  color: red;
 }
 
-/* Festivos en rojo */
-.festivo {
-  background-color: #ffcccc;
+.turno-letra {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.vacaciones {
+  color: green;
+}
+
+.dia-actual {
+  background-color: #e0f0e0;
 }
