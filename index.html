@@ -9,20 +9,23 @@
   <script defer src="app.js"></script>
 </head>
 <body>
+  
   <header>
-    <img src="assets/icono-app.png" alt="Logo" id="logo">
-    <span>TurnosApp</span>
-    <button id="menuBtn">☰</button>
+   <img src="assets/icono-app.png" alt="Logo"id="logo">
+     <div class="menu-btn" id="menuToggle">☰</div>
+    <div class="app-title">
+      <h1>TURNOSAPP</h1>
+    </div>
   </header>
 
-  <nav id="menu" class="hidden">
+  <nav id="sidemenu" class="hidden">
     <ul>
-      <li><a href="#intro">+ Introducir Turno</a></li>
-      <li><a href="#ver">📋 Ver Turnos</a></li>
-      <li><a href="#calendario">📅 Ver Calendario</a></li>
+      <li onclick="mostrarSeccion('formulario')">➕ Introducir Turno</li>
+      <li onclick="mostrarSeccion('listaTurnos')">📋 Ver Turnos</li>
+      <li onclick="mostrarSeccion('calendario')">🗓️ Ver Calendario</li>
     </ul>
   </nav>
-
+  
   <main>
     <section id="intro">
       <h1>Introduce un Turno</h1>
@@ -67,6 +70,62 @@
       <h2>Calendario de Turnos</h2>
       <div id="calendar"></div>
     </section>
+  </main>
+</body>
+</html>
+
+ 
+<body>
+ 
+
+ 
+
+  <main>
+    <section id="formulario" class="visible">
+      <form id="formTurno">
+        <div>
+          <label for="fecha">Fecha:</label>
+          <input type="date" id="fecha" required>
+        </div>
+        <div>
+          <label for="hora">Hora:</label>
+          <input type="time" id="hora" required>
+        </div>
+        <div>
+          <label for="tipo">Tipo de turno:</label>
+          <select id="tipo" required>
+            <option value="M">Mañana</option>
+            <option value="T">Tarde</option>
+            <option value="N">Noche</option>
+            <option value="V">Vacaciones</option>
+            <option value="L">Libranza</option>
+            <option value="D">Débito</option>
+          </select>
+        </div>
+        <div>
+          <label for="nota">Nota:</label>
+          <textarea id="nota" rows="2"></textarea>
+        </div>
+        <button type="submit">Añadir turno</button>
+      </form>
+    </section>
+
+    <section id="listaTurnos">
+      <input type="text" id="busqueda" placeholder="Buscar por fecha o mes...">
+      <table id="tablaTurnos">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Turno</th>
+            <th>Nota</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="calendario"></section>
   </main>
 </body>
 </html>
