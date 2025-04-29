@@ -2,47 +2,126 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TurnosApp</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="style.css">
-  <script defer src="app.js"></script>
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="assets/icono-app.png" />
 </head>
+
 <body>
-  <!-- Contenido principal -->
   <header>
-    <button id="menu-toggle">☰</button>
-    <div class="header-title">
-      <img src="assets/icon-app.png" alt="Logo">
-      <span>TURNOSAPP</span>
-    </div>
+<div class="header-content">
+    <img src="assets/icono-app.png" alt="Logo"  class="logo"/>
+<h1 class="company-name"> TurnosApp </h1></div>
+
+ <div class="menu-toggle" id="menuToggle">☰</div>
   </header>
 
   <nav id="menu" class="hidden">
     <ul>
-      <li><a href="#">+ Introducir turno</a></li>
-      <li><a href="#">Ver turnos</a></li>
-      <li><a href="#">Calendario</a></li>
-      <li><a href="#">Festivos</a></li>
+      <li onclick="mostrarSeccion('formulario')">➕ Introducir Turno</li>
+      <li onclick="mostrarSeccion('turnos')">🗂️ Ver Turnos</li>
+      <li onclick="mostrarSeccion('calendario')">📅 Ver Calendario</li>
+      <li onclick="mostrarSeccion('festivos')">🎉 Introducir Festivos</li>
     </ul>
   </nav>
 
   <main>
-    <!-- Formulario y calendario -->
-    <form id="formTurno">
-      <label for="fecha">Fecha:</label>
-      <input type="date" id="fecha" required>
-      <label for="hora">Hora:</label>
-      <input type="time" id="hora" required>
-      <label for="tipo">Tipo:</label>
-      <select id="tipo" required>
-        <option>M</option><option>T</option><option>N</option><option>L</option><option>V</option>
-      </select>
-      <label for="nota">Nota:</label>
-      <textarea id="nota" rows="2"></textarea>
-      <button type="submit">Añadir</button>
-    </form>
-    <section id="calendar"></section>
+    <!-- Sección de Formulario -->
+    <section id="formulario">
+      <h1>Apunta tu turno</h1>
+      <form id="formTurno">
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" required>
+
+        <label for="hora">Hora:</label>
+        <input type="time" id="hora" required>
+
+        <label for="tipo">Tipo de turno:</label>
+        <select id="tipo" required>
+          <option value="Mañana">Mañana</option>
+          <option value="Tarde">Tarde</option>
+          <option value="Noche">Noche</option>
+          <option value="Vacaciones">Vacaciones</option>
+          <option value="Libranza">Libranza</option>
+          <option value="Débito Horario">Débito Horario</option>
+        </select>
+
+        <label for="nota">Nota:</label>
+        <textarea id="nota" rows="2" placeholder="Notas..."></textarea>
+
+        <button type="submit">Añadir turno</button>
+      </form>
+    </section>
+
+
+
+<div id="tablaTurnos">
+      <table id="listadoTurnos">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Nota</th>
+            <th>Papelera</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Turnos insertados aquí -->
+        </tbody>
+      </table>
+    </div>
+ <script>
+    const formTurno = document.getElementById('formTurno');
+    const listadoTurnos = document.getElementById('listadoTurnos').querySelector('tbody');
+    const turnosCards = document.getElementById('turnosCards');
+
+    let turnos = JSON.parse(localStorage.getItem('turnos')) || [];
+
+    function renderizarTurnos() {
+      listadoTurnos.innerHTML = '';
+      turnosCards.innerHTML = '<h2>Turnos</h2>';
+
+      turnos.forEach((turno, index) => {
+        // Tabla
+        const row = document.createElement('tr');
+        row.innerHTML = 
+          <td>${formatearFecha(turno.fecha)}</td>
+          <td>${turno.hora} – ${turno.tipo}<br>${turno.nota || ''}</td>
+          <td><button class="delete-btn" onclick="eliminarTurno(${index})">🗑️</button></td>
+        ;
+        listadoTurnos.appendChild(row);
+</script>
+
+    <!-- Sección de Turnos -->
+    <section id="turnos" class="hidden">
+      <h2>Turnos Generados</h2>
+      <div id="turnosCards"></div>
+    </section>
+
+    <!-- Sección de Calendario -->
+    <section id="calendario" class="hidden">
+      <h2>Calendario</h2>
+      <div id="calendarioMes"></div>
+    </section>
+
+    <!-- Sección de Festivos -->
+    <section id="festivos" class="hidden">
+      <h2>Agregar Festivos</h2>
+      <form id="formFestivo">
+        <label for="fechaFestivo">Fecha festivo:</label>
+        <input type="date" id="fechaFestivo" required>
+
+        <label for="descripcionFestivo">Descripción:</label>
+        <input type="text" id="descripcionFestivo" placeholder="Ej: Año Nuevo" required>
+
+        <button type="submit">Agregar Festivo</button>
+      </form>
+    </section>
+
   </main>
+
+  <script src="app.js"></script>
 </body>
 </html>
