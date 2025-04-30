@@ -7,6 +7,9 @@ const formTurno = document.getElementById('formTurno');
 const formFestivo = document.getElementById('formFestivo');
 const turnosCards = document.getElementById('turnosCards');
 const calendarioMes = document.getElementById('calendarioMes');
+const tbodyTurnos = document.getElementById('tbodyTurnos');
+
+
 
 let turnos = JSON.parse(localStorage.getItem('turnos')) || [];
 let festivos = JSON.parse(localStorage.getItem('festivos')) || [];
@@ -23,18 +26,34 @@ function mostrarSeccion(id) {
 }
 
 function renderizarTurnos() {
-  turnosCards.innerHTML = '';
-  turnos.forEach(turno => {
-    const card = document.createElement('div');
-    card.className = 'turno-card';
-    card.innerHTML = `
-      <strong>${formatearFecha(turno.fecha)}</strong>
-      <p><strong>${turno.hora} – ${turno.tipo}</strong></p>
-      <p>${turno.nota || ''}</p>
+  /* modificaciones*/
+  if (!tbodyTurnos) return;
+  tbodyTurnos.innerHTML = '';
+  turnos.forEach((turno, index) => {
+    const fila = document.createElement('tr');
+    fila.innerHTML = `
+      <td>${formatearFecha(turno.fecha)}</td>
+      <td>${turno.hora} - ${turno.tipo}</td>
+      <td>${turno.nota || ''}</td>
+      <td><button onclick="eliminarTurno(${index})" class="delete-btn">🗑️</button></td>
     `;
-    turnosCards.appendChild(card);
+    tbodyTurnos.appendChild(fila);
   });
 }
+
+
+
+function eliminarTurno(index) {
+  const confirmado = confirm("¿Estás seguro de eliminar este turno?");
+  if (confirmado) {
+    turnos.splice(index, 1);
+    localStorage.setItem('turnos', JSON.stringify(turnos));
+    renderizarTurnos();
+    renderizarCalendario();
+  }
+}
+
+
 
 function renderizarCalendario() {
   calendarioMes.innerHTML = '';
@@ -49,12 +68,21 @@ function renderizarCalendario() {
 
     if (festivo) {
       div.classList.add('festivo');
-      div.innerHTML = `<strong>${dia}</strong><br><small>${festivo.descripcion}</small>`;
-    } else if (turno) {
-      div.innerHTML = `<strong>${dia}</strong><br><small>${turno.tipo.charAt(0)}</small>`;
-    } else {
-      div.innerHTML = `<strong>${dia}</strong>`;
     }
+    
+    let contenido = `<strong>${dia}</strong>`;
+    
+    if (festivo) {
+      contenido += `<br><small>${festivo.descripcion}</small>`;
+    }
+    if (turno) {
+      const letra = turno.tipo.charAt(0);
+      const color = letra === 'V' ? 'green' : 'black';
+      contenido += `<br><small style="color:${color}; font-weight:bold; font-size:1rem">${letra}</small>`;
+    }
+    
+    div.innerHTML = contenido;
+    
 
     calendarioMes.appendChild(div);
   }
