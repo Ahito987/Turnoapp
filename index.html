@@ -11,25 +11,15 @@
 </head>
 
 <body>
-  <header>
+  <header >
+   
     <div class="header-content">
-    <img src="assets/icono-app.png" alt="Logo " class="logo">
+    <img src="assets/icono-app.png" alt="Logo " class="logo" style="height: 40 px; vertical-align: left; margin-left: 0.5rem;">
     <h1 class="company-name"> TurnosApp </h1></div>
 
-<div class="menu-hamburguesa">
-    <button class="menu-btn">
-      <span class="menu-line"></span>
-      <span class="menu-line"></span>
-      <span class="menu-line"></span>
-    </button>
+
   </div>
-  <nav class="navegacion">
-    <ul>
-      <li><a href="#">Inicio</a></li>
-      <li><a href="#">Acerca de</a></li>
-      <li><a href="#">Contacto</a></li>
-    </ul>
-  </nav>
+ 
     
  <div class="menu-toggle" id="menuToggle">☰</div>
   </header>
@@ -71,21 +61,20 @@
       </form>
     </section>
 
+    <table id="tablaTurnos" class="tabla-turnos">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Turno</th>
+          <th>Nota</th>
+          <th>Borrar</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyTurnos"></tbody>
+    </table>
+    
 
 
-<div id="tablaTurnos">
-      <table id="listadoTurnos">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Nota</th>
-            <th>Papelera</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Turnos insertados aquí -->
-        </tbody>
-      </table>
     </div>
  <script>
     const formTurno = document.getElementById('formTurno');
@@ -140,3 +129,4 @@
   <script src="app.js"></script>
 </body>
 </html>
+
