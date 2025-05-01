@@ -263,6 +263,40 @@ button:hover {
   }
 }
 
+.calendario-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.calendario-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  padding: 10px;
+}
+
+.dia {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+  min-height: 60px;
+  border-radius: 5px;
+}
+
+.festivo {
+  background-color: #ffe5e5;
+  color: red;
+}
+
+.vacio {
+  background: transparent;
+  border: none;
+}
 
 
 
@@ -324,3 +358,17 @@ button:hover {
 .vacaciones {
   color: green;
 }
+
+
+ 
+  
+ 
+ 
+
+
+
+
+
+
+
+
