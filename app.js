@@ -159,7 +159,9 @@ formFestivo.addEventListener('submit', (e) => {
 // Inicializar
 renderizarTurnos();
 renderizarCalendario();
-
+document.addEventListener('DOMContentLoaded', () => {
+  mostrarSeccion('seccionCalendario'); // muestra por defecto
+});
   
 
    
