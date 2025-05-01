@@ -55,38 +55,73 @@ function eliminarTurno(index) {
 
 
 
+flet fechaActual = new Date(); // fecha actual
+
 function renderizarCalendario() {
   calendarioMes.innerHTML = '';
-  const diasMes = 31;
+
+  const mes = fechaActual.getMonth();
+  const año = fechaActual.getFullYear();
+
+  const primerDia = new Date(año, mes, 1).getDay(); // día de la semana
+  const diasMes = new Date(año, mes + 1, 0).getDate();
+
+  document.getElementById('mesActual').textContent = 
+    fechaActual.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+
+  for (let i = 0; i < primerDia; i++) {
+    calendarioMes.innerHTML += `<div class="dia vacio"></div>`;
+  }
+
   for (let dia = 1; dia <= diasMes; dia++) {
-    const fecha = `2025-04-${String(dia).padStart(2, '0')}`;
+    const fecha = `${año}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
     const div = document.createElement('div');
     div.className = 'dia';
 
     const turno = turnos.find(t => t.fecha === fecha);
     const festivo = festivos.find(f => f.fecha === fecha);
 
+    div.innerHTML = `<strong>${dia}</strong>`;
+
     if (festivo) {
       div.classList.add('festivo');
     }
-    
-    let contenido = `<strong>${dia}</strong>`;
-    
-    if (festivo) {
-      contenido += `<br><small>${festivo.descripcion}</small>`;
-    }
+
     if (turno) {
       const letra = turno.tipo.charAt(0);
       const color = letra === 'V' ? 'green' : 'black';
-      contenido += `<br><small style="color:${color}; font-weight:bold; font-size:1rem">${letra}</small>`;
+      div.innerHTML += `<br><small style="color:${color}; font-weight:bold">${letra}</small>`;
     }
-    
-    div.innerHTML = contenido;
-    
 
     calendarioMes.appendChild(div);
   }
 }
+
+document.getElementById('prevMes').addEventListener('click', () => {
+  fechaActual.setMonth(fechaActual.getMonth() - 1);
+  renderizarCalendario();
+});
+
+document.getElementById('nextMes').addEventListener('click', () => {
+  fechaActual.setMonth(fechaActual.getMonth() + 1);
+  renderizarCalendario();
+});
+
+calendarioMes.addEventListener('touchstart', (e) => {
+  startX = e.touches[0].clientX;
+});
+
+calendarioMes.addEventListener('touchend', (e) => {
+  const endX = e.changedTouches[0].clientX;
+  if (startX - endX > 50) {
+    fechaActual.setMonth(fechaActual.getMonth() + 1);
+    renderizarCalendario();
+  } else if (endX - startX > 50) {
+    fechaActual.setMonth(fechaActual.getMonth() - 1);
+    renderizarCalendario();
+  }
+});
+
 
 function formatearFecha(fecha) {
   const [a, m, d] = fecha.split('-');
@@ -124,3 +159,7 @@ formFestivo.addEventListener('submit', (e) => {
 // Inicializar
 renderizarTurnos();
 renderizarCalendario();
+
+  
+
+   
