@@ -7,12 +7,12 @@
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; font-family: Arial, sans-serif; }
-    header { background: #0077cc; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+    header { background: #54815F; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
     .menu-toggle { font-size: 1.5rem; cursor: pointer; }
     nav { background: #f1f1f1; padding: 1rem; }
     nav.hidden { display: none; }
     nav ul { list-style: none; padding: 0; }
-    nav li { margin-bottom: 1rem; cursor: pointer; }
+    nav li { margin-bottom: 1.5rem; cursor: pointer; }
     main { padding: 1rem; }
     section { display: none; overflow-y: auto; max-height: 80vh; }
     section:not(.hidden) { display: block; }
@@ -26,7 +26,8 @@
     .dia.festivo { background: #ffe6e6; color: red; font-weight: bold; }
     .vacio { visibility: hidden; }
     .nav-calendario { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    form input,
+
+form input,
 form select,
 form textarea {
   width: 100%;
@@ -37,6 +38,27 @@ form textarea {
   border: 1px solid #ccc;
   border-radius: 8px;
   box-sizing: border-box;
+}
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1rem;
+
+button {
+  background-color:#ff8d2e; /* Naranja */
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem; /* Más padding para dispositivos táctiles */
+  font-size: 1.1rem; /* Texto ligeramente más grande */
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #eda877; /* Naranja más claro al pasar el cursor */
 }
 
   </style>
@@ -61,7 +83,7 @@ form textarea {
     <!-- Formulario de turnos -->
     <section id="formulario">
       <h2>Apunta tu turno</h2>
-         <form id="formTurno">
+      <form id="formTurno">
   <div>
     <label for="fecha">📅 Fecha:</label><br>
     <input type="date" id="fecha" required>
@@ -92,7 +114,9 @@ form textarea {
 
   <button type="submit">➕ Añadir Turno</button>
 </form>
+
     </section>
+
     <!-- Sección turnos -->
     <section id="seccionTurnos" class="hidden">
       <h2>Turnos Registrados</h2>
