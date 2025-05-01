@@ -41,6 +41,15 @@ function renderizarTurnos() {
   });
 }
 
+if (turno) {
+  const letra = turno.tipo.charAt(0);
+  const color = letra === 'V' ? 'green' : 'black';
+  div.innerHTML += `<br><small style="color:${color}; font-weight:bold" title="${turno.nota || ''}">${letra}</small>`;
+}
+div.addEventListener('click', () => {
+  document.getElementById('fecha').value = fecha; // autocompletar fecha del formulario
+  mostrarSeccion('seccionAgregarTurno'); // si tienes una sección con este ID
+});
 
 
 function eliminarTurno(index) {
@@ -55,7 +64,7 @@ function eliminarTurno(index) {
 
 
 
-flet fechaActual = new Date(); // fecha actual
+let fechaActual = new Date(); // fecha actual
 
 function renderizarCalendario() {
   calendarioMes.innerHTML = '';
@@ -112,6 +121,7 @@ calendarioMes.addEventListener('touchstart', (e) => {
 });
 
 calendarioMes.addEventListener('touchend', (e) => {
+  let startX= 0;
   const endX = e.changedTouches[0].clientX;
   if (startX - endX > 50) {
     fechaActual.setMonth(fechaActual.getMonth() + 1);
@@ -162,6 +172,9 @@ renderizarCalendario();
 document.addEventListener('DOMContentLoaded', () => {
   mostrarSeccion('seccionCalendario'); // muestra por defecto
 });
-  
 
    
+
+
+
+
