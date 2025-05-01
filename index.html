@@ -48,22 +48,38 @@
     <!-- Formulario de turnos -->
     <section id="formulario">
       <h2>Apunta tu turno</h2>
-      <form id="formTurno">
-        <input type="date" id="fecha" required />
-        <input type="time" id="hora" required />
-        <select id="tipo" required>
-          <option value="Mañana">Mañana</option>
-          <option value="Tarde">Tarde</option>
-          <option value="Noche">Noche</option>
-          <option value="Vacaciones">Vacaciones</option>
-          <option value="Libranza">Libranza</option>
-          <option value="Débito Horario">Débito Horario</option>
-        </select>
-        <textarea id="nota" rows="2" placeholder="Notas..."></textarea>
-        <button type="submit">Añadir turno</button>
-      </form>
-    </section>
+         <form id="formTurno">
+  <div>
+    <label for="fecha">📅 Fecha:</label><br>
+    <input type="date" id="fecha" required>
+  </div>
 
+  <div>
+    <label for="hora">⏰ Hora:</label><br>
+    <input type="time" id="hora" required>
+  </div>
+
+  <div>
+    <label for="tipo">🛠️ Tipo de turno:</label><br>
+    <select id="tipo" required>
+      <option value="">Selecciona</option>
+      <option value="Mañana">Mañana</option>
+      <option value="Tarde">Tarde</option>
+      <option value="Noche">Noche</option>
+      <option value="Vacaciones">Vacaciones</option>
+      <option value="Libranza">Libranza</option>
+      <option value="Débito Horario">Débito Horario</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="nota">📝 Notas:</label><br>
+    <textarea id="nota" rows="2" placeholder="Notas..."></textarea>
+  </div>
+
+  <button type="submit">➕ Añadir Turno</button>
+</form>
+    </section>
     <!-- Sección turnos -->
     <section id="seccionTurnos" class="hidden">
       <h2>Turnos Registrados</h2>
