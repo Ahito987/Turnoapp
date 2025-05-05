@@ -8,7 +8,9 @@
   <meta name="theme-color" content="#2f4e37" />
   <link rel="icon" href="assets/icono-app38x46.png" type="image/png">
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
       background-color: #171817;
@@ -20,19 +22,17 @@
       text-align: center;
       background-color: #567964;
       color: white;
-      padding: 20px;
+      padding: 10px;
     }
-    .logo { 
-      width: 38px; 
-      vertical-align: middle; 
-          }
-    
-      menu-toggle {
-  font-size: 28px;  /* Aumenta el tamaño del icono */
-  cursor: pointer;
-  margin-right: 10px;
-  vertical-align: middle;
-
+    .logo {
+      width: 38px;
+      vertical-align: middle;
+    }
+    .menu-toggle {
+      font-size: 28px;
+      cursor: pointer;
+      margin-right: 10px;
+      vertical-align: middle;
     }
     nav {
       position: fixed;
@@ -51,23 +51,24 @@
       padding: 10px 20px;
       text-decoration: none;
     }
-    nav a:hover { background-color: #5a7b5f; }
-    nav.open { left: 0; }
-    
+    nav a:hover {
+      background-color: #5a7b5f;
+    }
+    nav.open {
+      left: 0;
+    }
     .controls {
       display: flex;
       justify-content: space-between;
-      padding: 25px;
+      padding: 15px;
       background-color: #d8e9dc;
       align-items: center;
       font-weight: bold;
-      font-size: 1.5rem;
+      font-size: 1rem;
     }
     .controls button {
-      background-color: #53775c;
+      background-color: #2f4e37;
       color: white;
-      font-weigth: bold;
-      font-size: 15px;
       border: none;
       padding: 5px 10px;
       cursor: pointer;
@@ -85,7 +86,7 @@
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 1px;
-      background-color:#567964;
+      background-color: #567964;
       padding: 10px;
       min-height: 100vh;
     }
@@ -109,7 +110,9 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.5);
     }
-    .modal.hidden { display: none; }
+    .modal.hidden {
+      display: none;
+    }
     .modal-content {
       background: white;
       padding: 20px;
@@ -121,7 +124,9 @@
       cursor: pointer;
       font-size: 20px;
     }
-    footer img { vertical-align: middle; }
+    footer img {
+      vertical-align: middle;
+    }
   </style>
 </head>
 <body>
@@ -143,8 +148,7 @@
   </div>
 
   <div id="diasSemana">
-    <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div>
-    <div>Vie</div><div>Sáb</div><div>Dom</div>
+    <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
   </div>
 
   <div id="calendario"></div>
@@ -194,10 +198,7 @@
     const editNota = document.getElementById("editNota");
     const menu = document.getElementById("sideMenu");
     const tituloMes = document.getElementById("mesActual");
-    const btnPrev = document.getElementById("prevMes");
-    const btnNext = document.getElementById("nextMes");
 
-    // Se cargan los turnos guardados o se inicializa como objeto vacío
     let turnos = JSON.parse(localStorage.getItem("turnos")) || {};
     let fechaActual = new Date();
 
@@ -205,44 +206,47 @@
       menu.classList.toggle("open");
     }
 
-    function cambiarMes(direccion) {
-      fechaActual.setMonth(fechaActual.getMonth() + direccion);
-      renderizarCalendario();
-    }
+    document.addEventListener("click", function(e) {
+      if (!menu.contains(e.target) && !e.target.classList.contains("menu-toggle")) {
+        menu.classList.remove("open");
+      }
+    });
+
+    menu.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        menu.classList.remove("open");
+      });
+    });
 
     function renderizarCalendario() {
-  calendario.innerHTML = "";
-  const anio = fechaActual.getFullYear();
-  const mes = fechaActual.getMonth();
-  const primerDia = new Date(anio, mes, 1);
-  const ultimoDia = new Date(anio, mes + 1, 0);
-  const offset = (primerDia.getDay() + 6) % 7; // lunes=0
+      calendario.innerHTML = "";
+      const anio = fechaActual.getFullYear();
+      const mes = fechaActual.getMonth();
+      const primerDia = new Date(anio, mes, 1);
+      const ultimoDia = new Date(anio, mes + 1, 0);
+      const offset = (primerDia.getDay() + 6) % 7;
 
-  const nombreMeses = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
-  document.getElementById("mesActual").textContent = `${nombreMeses[mes]} ${anio}`;
+      const nombreMeses = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+      tituloMes.textContent = `${nombreMeses[mes]} ${anio}`;
 
-  for (let i = 0; i < offset; i++) {
-    const vacio = document.createElement("div");
-    vacio.classList.add("dia");
-    vacio.style.background = "#f4f4f4";
-    calendario.appendChild(vacio);
-  }
+      for (let i = 0; i < offset; i++) {
+        const vacio = document.createElement("div");
+        vacio.classList.add("dia");
+        vacio.style.background = "#f4f4f4";
+        calendario.appendChild(vacio);
+      }
 
-  for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
-    const fecha = new Date(anio, mes, dia);
-
-    // ✅ Evitamos problemas con zonas horarias usando componentes por separado
-    const fechaLocal = `${fecha.getFullYear()}-${(fecha.getMonth() + 1).toString().padStart(2, '0')}-${fecha.getDate().toString().padStart(2, '0')}`;
-
-    const div = document.createElement("div");
-    div.classList.add("dia");
-    div.dataset.fecha = fechaLocal;
-    div.innerHTML = `<strong>${dia}</strong><br>${renderizarTurno(fechaLocal)}`;
-    div.onclick = () => abrirModal(fechaLocal);
-    calendario.appendChild(div);
-  }
-}
-
+      for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
+        const fecha = new Date(anio, mes, dia);
+        const fechaLocal = `${anio}-${String(mes + 1).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+        const div = document.createElement("div");
+        div.classList.add("dia");
+        div.dataset.fecha = fechaLocal;
+        div.innerHTML = `<strong>${dia}</strong><br>${renderizarTurno(fechaLocal)}`;
+        div.onclick = () => abrirModal(fechaLocal);
+        calendario.appendChild(div);
+      }
+    }
 
     function renderizarTurno(fecha) {
       const turno = turnos[fecha];
@@ -273,21 +277,29 @@
       renderizarCalendario();
     };
 
-    btnPrev.onclick = () => cambiarMes(-1);
-    btnNext.onclick = () => cambiarMes(1);
+    document.getElementById("prevMes").onclick = () => {
+      fechaActual.setMonth(fechaActual.getMonth() - 1);
+      renderizarCalendario();
+    };
 
-    // Swipe para móvil (se detecta el deslizamiento para cambiar de mes)
-    let startX = 0;
+    document.getElementById("nextMes").onclick = () => {
+      fechaActual.setMonth(fechaActual.getMonth() + 1);
+      renderizarCalendario();
+    };
+
     calendario.addEventListener("touchstart", e => startX = e.touches[0].clientX);
     calendario.addEventListener("touchend", e => {
       const endX = e.changedTouches[0].clientX;
-      if (startX - endX > 50) cambiarMes(1);
-      if (endX - startX > 50) cambiarMes(-1);
+      if (startX - endX > 50) document.getElementById("nextMes").click();
+      if (endX - startX > 50) document.getElementById("prevMes").click();
     });
 
-    renderizarCalendario();
+    let startX = 0;
 
-    // Registro del Service Worker
+    renderizarCalendario();
+  </script>
+
+  <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("/misturno/service-worker.js")
