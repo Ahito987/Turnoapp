@@ -8,6 +8,8 @@
   <meta name="theme-color" content="#2f4e37" />
   <link rel="icon" href="assets/icono-app38x46.png" type="image/png">
   <style>
+
+<style>
     * {
       box-sizing: border-box;
     }
@@ -18,25 +20,23 @@
       padding: 0;
       overflow-x: hidden;
     }
-
     header, footer {
       text-align: center;
       background-color: #567964;
       color: white;
       padding: 10px;
     }
-
     .menu-toggle {
-      font-size: 30px;
+      font-size: 24px;
       cursor: pointer;
       margin-right: 10px;
+      vertical-align: middle;
+      display: inline-block;
     }
-
     .logo {
       width: 38px;
       vertical-align: middle;
     }
-
     nav {
       position: fixed;
       top: 0;
@@ -48,22 +48,18 @@
       padding-top: 60px;
       z-index: 10;
     }
-
     nav a {
       display: block;
       color: white;
       padding: 10px 20px;
       text-decoration: none;
     }
-
     nav a:hover {
       background-color: #5a7b5f;
     }
-
     nav.open {
       left: 0;
     }
-
     .controls {
       display: flex;
       justify-content: space-between;
@@ -73,16 +69,20 @@
       font-weight: bold;
       font-size: 1rem;
     }
-
     .controls button {
       background-color: #2f4e37;
       color: white;
       border: none;
-      padding: 5px 10px;
+      padding: 10px 20px;
       cursor: pointer;
       border-radius: 5px;
+      font-size: 1.2rem;
+      width: 350px;
     }
-
+    #mesActual {
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
     #diasSemana {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -91,16 +91,14 @@
       font-weight: bold;
       padding: 5px 0;
     }
-
     #calendario {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 1px;
-      background-color: #567964;
+      background-color:#567964;
       padding: 10px;
       min-height: 100vh;
     }
-
     .dia {
       background-color: white;
       padding: 4px;
@@ -110,6 +108,27 @@
       font-weight: bold;
       text-align: center;
     }
+
+    table { 
+      width: 100%;
+       border-collapse: collapse;
+        margin-top: 1rem;
+       }
+      
+       th, td {
+         border: 1px solid #6e6c6c;
+          padding: 0.5rem;
+           text-align: left; 
+
+    }
+  
+    #calendarioMes {
+       display: grid;
+        grid-template-columns: repeat(7, 1fr);
+         gap: 0.25rem; 
+         margin-top: 1rem; }
+
+
 
     .modal {
       display: flex;
@@ -122,26 +141,64 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.5);
     }
-
     .modal.hidden {
       display: none;
     }
-
     .modal-content {
       background: white;
       padding: 20px;
       border-radius: 5px;
       width: 300px;
     }
-
     .cerrar {
       float: right;
       cursor: pointer;
       font-size: 20px;
     }
-
     footer img {
       vertical-align: middle;
+    }
+    @media (max-width: 600px) {
+      .controls {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        text-align: center;
+      }
+      .controls button {
+        width: 100%;
+        max-width: 250px;
+      }
+      #mesActual {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+      }
+    }
+  
+
+
+    /* ... MISMO CSS QUE YA TIENES ... */
+
+
+    #seccionCalendario {
+      display: block;
+    }
+
+    #seccionTurnos {
+      display: none;
+      padding: 20px;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
@@ -155,6 +212,7 @@
   <nav id="sideMenu">
     <a href="#" data-section="turnos">Turnos Generados</a>
     <a href="#" data-section="festivos">Añadir Festivos</a>
+    <a href="#" data-section="calendario">Calendario</a>
   </nav>
 
   <div class="controls">
@@ -163,12 +221,15 @@
     <button id="btnNext">Siguiente »</button>
   </div>
 
-  <div id="diasSemana">
-    <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
+  <!-- CALENDARIO -->
+  <div id="seccionCalendario">
+    <div id="diasSemana">
+      <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
+    </div>
+    <div id="calendario"></div>
   </div>
 
-  <div id="calendario"></div>
-
+  <!-- MODAL TURNO -->
   <div id="modalTurno" class="modal hidden">
     <div class="modal-content">
       <span id="cerrarModal" class="cerrar">&times;</span>
@@ -198,6 +259,18 @@
     </div>
   </div>
 
+  <!-- SECCIÓN TURNOS -->
+  <div id="seccionTurnos">
+    <h2>Turnos Generados</h2>
+    <table id="tablaTurnos">
+      <thead>
+        <tr><th>Fecha</th><th>Hora</th><th>Tipo</th><th>Nota</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- SECCIÓN FESTIVOS -->
   <div id="seccionFestivos" style="display:none; padding: 20px; background:#fff;">
     <h2>Añadir Festivo</h2>
     <form id="formFestivo">
@@ -207,25 +280,43 @@
       <input type="text" id="notaFestivo" placeholder="Ej: Día de la Constitución" />
       <button type="submit">Añadir Festivo</button>
     </form>
-    <ul id="listaFestivos"></ul>
-  </div>
 
-  <div id="seccionTurnos" style="display:none; padding: 20px; background:#fff;">
-    <h2>Turnos Generados</h2>
-    <table id="tablaTurnos" border="1" style="width:100%; border-collapse: collapse;">
+    <table id="tablaFestivos" border="1" style="width:100%; border-collapse: collapse; margin-top: 20px;">
       <thead>
-        <tr><th>Fecha</th><th>Hora</th><th>Tipo</th><th>Nota</th></tr>
+        <tr><th>Fecha</th><th>Descripción</th><th>Eliminar</th></tr>
       </thead>
       <tbody></tbody>
     </table>
+
+    <div id="seccionTurnos" style="display:none; padding: 20px; background:#fff;">
+      <h2>Turnos Generados</h2>
+      <table id="tablaTurnos" border="1" style="width:100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Tipo</th>
+            <th>Notas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Se llenará dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+    
   </div>
 
   <footer>
     &copy; Made with <img width="20" height="20" src="https://img.icons8.com/metro/26/FA5252/hearts.png" alt="hearts"/> for TurnosApp 2025.
   </footer>
 
+  <!-- JS -->
   <script>
     const calendario = document.getElementById("calendario");
+    const seccionCalendario = document.getElementById("seccionCalendario");
+    const seccionFestivos = document.getElementById("seccionFestivos");
+    const seccionTurnos = document.getElementById("seccionTurnos");
     const modal = document.getElementById("modalTurno");
     const cerrarModal = document.getElementById("cerrarModal");
     const formEditar = document.getElementById("formEditarTurno");
@@ -237,10 +328,7 @@
     const tituloMes = document.getElementById("tituloMes");
     const btnPrev = document.getElementById("btnPrev");
     const btnNext = document.getElementById("btnNext");
-    const seccionFestivos = document.getElementById("seccionFestivos");
-    const seccionTurnos = document.getElementById("seccionTurnos");
     const tablaTurnos = document.getElementById("tablaTurnos").querySelector("tbody");
-    const listaFestivos = document.getElementById("listaFestivos");
     const formFestivo = document.getElementById("formFestivo");
     const fechaFestivo = document.getElementById("fechaFestivo");
     const notaFestivo = document.getElementById("notaFestivo");
@@ -288,6 +376,7 @@
     }
 
     function abrirModal(fecha) {
+      controles.style.display = "none"; // 👈 Oculta controles
       editFecha.value = fecha;
       const turno = turnos[fecha] || {};
       editHora.value = turno.hora || "";
@@ -296,7 +385,12 @@
       modal.classList.remove("hidden");
     }
 
-    cerrarModal.onclick = () => modal.classList.add("hidden");
+    cerrarModal.onclick = () =>{ modal.classList.add("hidden");
+     // Muestra controles solo si estamos en calendario
+  if (seccionCalendario.style.display !== "none") {
+    controles.style.display = "flex";
+  }
+    };
 
     formEditar.onsubmit = function (e) {
       e.preventDefault();
@@ -321,20 +415,19 @@
       renderizarCalendario();
     };
 
-    calendario.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-    calendario.addEventListener("touchend", e => {
-      const endX = e.changedTouches[0].clientX;
-      if (startX - endX > 50) btnNext.click();
-      if (endX - startX > 50) btnPrev.click();
-    });
+    const controles = document.querySelector(".controls"); // Agrega esta línea arriba si no existe, para ocultar controles
 
     document.querySelectorAll("nav a").forEach(link => {
       link.addEventListener("click", e => {
         e.preventDefault();
         const section = link.dataset.section;
         menu.classList.remove("open");
+
+        // Ocultar todas las secciones
         seccionFestivos.style.display = "none";
         seccionTurnos.style.display = "none";
+        seccionCalendario.style.display = "none";
+        controles.style.display = "none"; // Oculta controles por defecto no se ven turnos ni festivos
 
         if (section === "festivos") {
           seccionFestivos.style.display = "block";
@@ -342,6 +435,9 @@
         } else if (section === "turnos") {
           seccionTurnos.style.display = "block";
           renderizarTurnos();
+        } else if (section === "calendario") {
+          seccionCalendario.style.display = "block";
+          controles.style.display = "flex"; // Solo muestra en el calendario
         }
       });
     });
@@ -352,18 +448,40 @@
       for (const fecha of fechas) {
         const t = turnos[fecha];
         const fila = document.createElement("tr");
-        fila.innerHTML = `<td>${fecha}</td><td>${t.hora}</td><td>${t.tipo}</td><td>${t.nota}</td>`;
+        const [y, m, d] = fecha.split("-");
+        const fechaFormateada = `${d}/${m}/${y}`;
+        fila.innerHTML = `<td>${fechaFormateada}</td><td>${t.hora}</td><td>${t.tipo}</td><td>${t.nota}</td>`;
+
         tablaTurnos.appendChild(fila);
       }
     }
 
     function renderizarFestivos() {
-      listaFestivos.innerHTML = "";
-      const fechas = Object.keys(turnos).filter(f => turnos[f].tipo === "V");
-      for (const fecha of fechas) {
-        const li = document.createElement("li");
-        li.textContent = `${fecha}: ${turnos[fecha].nota || "Festivo"}`;
-        listaFestivos.appendChild(li);
+  const tablaFestivos = document.getElementById("tablaFestivos").querySelector("tbody");
+  tablaFestivos.innerHTML = "";
+  const fechas = Object.keys(turnos).filter(f => turnos[f].tipo === "V").sort();
+
+  for (const fecha of fechas) {
+    const festivo = turnos[fecha];
+    const [y, m, d] = fecha.split("-");
+    const fechaFormateada = `${d}/${m}/${y}`;
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td>${fechaFormateada}</td>
+      <td>${festivo.nota || "Festivo"}</td>
+      <td><button onclick="eliminarFestivo('${fecha}')">🗑️</button></td>
+    `;
+    tablaFestivos.appendChild(fila);
+  }
+}
+
+
+    function eliminarFestivo(fecha) {
+      if (confirm("¿Eliminar este festivo?")) {
+        delete turnos[fecha];
+        localStorage.setItem("turnos", JSON.stringify(turnos));
+        renderizarFestivos();
+        renderizarCalendario();
       }
     }
 
@@ -395,3 +513,7 @@
   </script>
 </body>
 </html>
+
+
+
+    
