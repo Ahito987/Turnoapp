@@ -14,7 +14,7 @@
     }
     body {
       font-family: Arial, sans-serif;
-      background-color: #171817;
+      background-color: #4a4d4a;
       margin: 0;
       padding: 0;
       overflow-x: hidden;
@@ -66,17 +66,17 @@
       background-color: #d8e9dc;
       align-items: center;
       font-weight: bold;
-      font-size: 1rem;
+      font-size: 1.5rem;
     }
     .controls button {
       background-color: #2f4e37;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 5px 10px;
       cursor: pointer;
       border-radius: 5px;
       font-size: 1.2rem;
-      width: 350px;
+      width: 200px;
     }
     #mesActual {
       font-size: 1.6rem;
@@ -94,9 +94,9 @@
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 0.5px;
-      background-color:#567964;
+      background-color:#415a44;
       padding: 10px;
-      min-height: 70vh;/*100vh*/
+      min-height: auto;/*100vh*/
     }
     .dia {
       background-color: white;
@@ -172,8 +172,8 @@
     
     @media (max-width: 600px) {
   .dia {
-    font-size: 0.8em;
-    min-height: 50px;
+    font-size: 1.25em;
+    min-height: 60px;
     padding: 1px;
   }
 
@@ -234,9 +234,9 @@
   </nav>
 
   <div class="controls">
-    <button id="btnPrev">« Anterior</button>
+    <button id="btnPrev">« </button>
     <span id="tituloMes"></span>
-    <button id="btnNext">Siguiente »</button>
+    <button id="btnNext"> »</button>
   </div>
 
   <!-- CALENDARIO -->
@@ -278,10 +278,10 @@
   </div>
 
   <!-- SECCIÓN TURNOS -->
-  <div id="seccionTurnos">
+  <div id="seccionTurnos"style="display:none; padding: 20px; background:#fff;">
     <div class="tabla-responsive">
     <h2>Turnos Generados</h2>
-    <table id="tablaTurnos">
+    <table id="tablaTurnos"border="1" style="width:100%; border-collapse: collapse;">
       <thead>
         <tr><th>Fecha</th><th>Hora</th><th>Tipo</th><th>Nota</th></tr>
       </thead>
@@ -308,23 +308,7 @@
       <tbody></tbody>
     </table>
 
-    <div id="seccionTurnos" style="display:none; padding: 20px; background:#fff;">
-      <h2>Turnos Generados</h2>
-      <table id="tablaTurnos" border="1" style="width:100%; border-collapse: collapse;">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Hora</th>
-            <th>Tipo</th>
-            <th>Notas</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Se llenará dinámicamente -->
-        </tbody>
-      </table>
-    </div>
-  </div>
+    
   <footer>
     &copy; Made with <img width="20" height="20" src="https://img.icons8.com/metro/26/FA5252/hearts.png" alt="hearts"/> for TurnosApp 2025.
   </footer>
