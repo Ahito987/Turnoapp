@@ -7,7 +7,6 @@
   <link rel="manifest" href="manifest.json"/>
   <meta name="theme-color" content="#2f4e37" />
   <link rel="icon" href="assets/icono-app38x46.png" type="image/png">
-  <style>
 
 <style>
     * {
@@ -121,14 +120,11 @@
            text-align: left; 
 
     }
-  
     #calendarioMes {
        display: grid;
         grid-template-columns: repeat(7, 1fr);
          gap: 0.25rem; 
          margin-top: 1rem; }
-
-
 
     .modal {
       display: flex;
@@ -173,23 +169,18 @@
         font-size: 1.5rem;
         margin-bottom: 5px;
       }
-    }
+    
     @media (max-width: 600px) {
   .dia {
     font-size: 0.8em;
     min-height: 50px;
     padding: 1px;
   }
-}
-
-
-
 
     .tabla-responsive {
   width: 100%;
   overflow-x: auto;
 }
-
    .tabla-responsive table {
   width: 100%;
   min-width: 500px; /* o más, según el contenido */
@@ -200,8 +191,6 @@
     font-size: 14px;
     padding: 6px;
   }
-}
-
     #seccionCalendario {
       display: block;
     }
@@ -222,9 +211,9 @@
       text-align: left;
       border: 1px solid #ccc;
     }
-
-    #tablaTurnos td:first-child,
-#tablaTurnos th:first-child {
+  
+   #tablaTurnos td:first-child,
+  #tablaTurnos th:first-child {
   width: 40px; /* Ajusta según el tamaño deseado */
   white-space: nowrap; /* Evita salto de línea */
 }
@@ -335,14 +324,12 @@
         </tbody>
       </table>
     </div>
-    
   </div>
-
   <footer>
     &copy; Made with <img width="20" height="20" src="https://img.icons8.com/metro/26/FA5252/hearts.png" alt="hearts"/> for TurnosApp 2025.
   </footer>
 
-  <!-- JS -->
+  <!-- --------------------------------JAVASCRIPT-------------------------- -->
   <script>
     const calendario = document.getElementById("calendario");
     const seccionCalendario = document.getElementById("seccionCalendario");
@@ -505,7 +492,6 @@
     tablaFestivos.appendChild(fila);
   }
 }
-
 
     function eliminarFestivo(fecha) {
       if (confirm("¿Eliminar este festivo?")) {
