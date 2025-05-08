@@ -283,7 +283,7 @@
     <h2>Turnos Generados</h2>
     <table id="tablaTurnos"border="1" style="width:100%; border-collapse: collapse;">
       <thead>
-        <tr><th>Fecha</th><th>Hora</th><th>Tipo</th><th>Nota</th></tr>
+        <tr><th>Fecha</th><th>Hora</th><th>Tipo</th><th>Nota</th><th>Eliminar</th></tr>
       </thead>
       <tbody></tbody>
     </table>
@@ -452,11 +452,22 @@
         const fila = document.createElement("tr");
         const [y, m, d] = fecha.split("-");
         const fechaFormateada = `${d}/${m}/${y}`;
-        fila.innerHTML = `<td>${fechaFormateada}</td><td>${t.hora}</td><td>${t.tipo}</td><td>${t.nota}</td>`;
+        fila.innerHTML = `<td>${fechaFormateada}</td><td>${t.hora}</td><td>${t.tipo}</td><td>${t.nota}</td>
+        <td><button onclick="eliminarTurno('${fecha}')">🗑️</button></td>`;
 
         tablaTurnos.appendChild(fila);
       }
     }
+
+
+    function eliminarTurno(fecha) {
+  if (confirm("¿Eliminar este turno?")) {
+    delete turnos[fecha];
+    localStorage.setItem("turnos", JSON.stringify(turnos));
+    renderizarTurnos();
+    renderizarCalendario();
+  }
+}
 
     function renderizarFestivos() {
   const tablaFestivos = document.getElementById("tablaFestivos").querySelector("tbody");
