@@ -7,14 +7,15 @@
   <link rel="manifest" href="manifest.json"/>
   <meta name="theme-color" content="#2f4e37" />
   <link rel="icon" href="assets/icono-app38x46.png" type="image/png">
+  <style>
 
-<style>
+
     * {
       box-sizing: border-box;
     }
     body {
       font-family: Arial, sans-serif;
-      background-color: #4a4d4a;
+      background-color: #d8e9dc;
       margin: 0;
       padding: 0;
       overflow-x: hidden;
@@ -28,13 +29,14 @@
     .menu-toggle {
       font-size: 24px;
       cursor: pointer;
-      margin-right: 10px;
-      vertical-align: middle;
+      margin-right: 70px;
+      vertical-align: auto;
       display: inline-block;
     }
     .logo {
-      width: 38px;
-      vertical-align: middle;
+      width: 60px;
+      vertical-align: auto;
+      margin-left: 60px;
     }
     nav {
       position: fixed;
@@ -54,7 +56,7 @@
       text-decoration: none;
     }
     nav a:hover {
-      background-color: #5a7b5f;
+      background-color: #7fa585;
     }
     nav.open {
       left: 0;
@@ -66,26 +68,27 @@
       background-color: #d8e9dc;
       align-items: center;
       font-weight: bold;
-      font-size: 1.5rem;
+      font-size: 1.75rem; /* tamaño  fuente mes 24 px */
+      color: #262726; /* texto mes*/
     }
     .controls button {
       background-color: #2f4e37;
       color: white;
       border: none;
-      padding: 5px 10px;
+      padding: 4px 8px;
       cursor: pointer;
-      border-radius: 5px;
-      font-size: 1.2rem;
+      border-radius: 3px;
+      font-size: 1.5rem;
       width: 200px;
     }
     #mesActual {
       font-size: 1.6rem;
-      font-weight: bold;
+      font-weight:bold;
     }
     #diasSemana {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      background-color: #f38f0d;
+      background-color: #f38f0d; /* naranja dias semana*/
       text-align: center;
       font-weight: bold;
       padding: 5px 0;
@@ -94,37 +97,42 @@
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 0.5px;
-      background-color:#415a44;
-      padding: 10px;
+      background-color:#2f4e37; /* color fondo calendario*/
+      padding: 5px;
       min-height: auto;/*100vh*/
     }
     .dia {
-      background-color: white;
+      background-color: rgb(255, 255, 255);
       padding: 2px;
       min-height: 60px;
       cursor: pointer;
-      font-size: 0.9em;
-      font-weight: bold;
+      font-size: 1em;
+      font-weight: normal;
       text-align: center;
+      
     }
 
     table { 
       width: 100%;
        border-collapse: collapse;
-        margin-top: 1rem;
+        margin-top: 1.5rem;
+        background-color: #f9f9f9;
        }
       
        th, td {
          border: 1px solid #6e6c6c;
           padding: 0.5rem;
-           text-align: left; 
+           text-align: center; 
 
     }
+  
     #calendarioMes {
        display: grid;
         grid-template-columns: repeat(7, 1fr);
          gap: 0.25rem; 
-         margin-top: 1rem; }
+         margin-top: 1.5rem; }
+
+
 
     .modal {
       display: flex;
@@ -137,60 +145,146 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.5);
     }
+
     .modal.hidden {
       display: none;
     }
+
     .modal-content {
       background: white;
       padding: 20px;
       border-radius: 5px;
       width: 300px;
     }
+
     .cerrar {
       float: right;
       cursor: pointer;
       font-size: 20px;
     }
+
     footer img {
       vertical-align: middle;
     }
+
+    .cambioturno {
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      max-width: auto;
+      margin: 0 auto;
+      
+    }
+
+    .oculto {
+      display: none;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    label, input, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"], input[type="date"] {
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    button[type="submit"] {
+      background-color: #f38f0d;
+      color: rgb(250, 255, 253);
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #f8b931;
+    }
+
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #f9f9f9;
+    }
+
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    table th {
+      background-color: #93b69e;
+    }
+
+    .delete-btn {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .delete-btn:hover {
+      color: red;
+    } 
+/*--------------------------------------------------------------------------------------*/
+
     @media (max-width: 600px) {
       .controls {
-        flex-direction: column;
+        /*flex-direction: column;*/
         align-items: center;
         gap: 10px;
         text-align: center;
       }
       .controls button {
-        width: 100%;
+        width: auto /*100%*/;
         max-width: 250px;
       }
       #mesActual {
         font-size: 1.5rem;
         margin-bottom: 5px;
       }
-    
+    }
+
     @media (max-width: 600px) {
   .dia {
-    font-size: 1.25em;
+    font-size: 1.25rem;
     min-height: 60px;
     padding: 1px;
   }
+}
 
     .tabla-responsive {
   width: 100%;
   overflow-x: auto;
 }
+
    .tabla-responsive table {
   width: 100%;
   min-width: 500px; /* o más, según el contenido */
   border-collapse: collapse;
 }
+
 @media (max-width: 600px) {
   th, td {
     font-size: 14px;
     padding: 6px;
   }
+}
+
     #seccionCalendario {
       display: block;
     }
@@ -199,6 +293,13 @@
       display: none;
       padding: 20px;
       background: #fff;
+    }
+    
+    .cambioturno{
+      display: grid;
+      font-size: 16px;
+      color: #0c0c0c;
+
     }
 
     table {
@@ -211,17 +312,37 @@
       text-align: left;
       border: 1px solid #ccc;
     }
-  
-   #tablaTurnos td:first-child,
-  #tablaTurnos th:first-child {
-  width: 40px; /* Ajusta según el tamaño deseado */
-  white-space: nowrap; /* Evita salto de línea */
+
+    #tablaTurnos td:first-child,
+    #tablaTurnos th:first-child {
+    width: 40px; /* Ajusta según el tamaño deseado */
+    white-space: nowrap; /* Evita salto de línea */
 }
 
+   .tablacambioturno { 
+      width: 100%;
+       border-collapse: collapse;
+        margin-top: 1rem;
+       }
+      
+       th, td {
+         border: 1px solid #6e6c6c;
+          padding: 0.5rem;
+           text-align: left; 
+
+    }
+    textarea {
+  width: 100%;
+  padding: 10px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+  
   </style>
 </head>
 <body>
-  <header>
+  <header> 
     <span class="menu-toggle" onclick="toggleMenu()">&#9776;</span>
     <img src="assets/icono-app38x46.png" alt="logo" class="logo"/>
     <h1 style="display:inline">TurnosApp</h1>
@@ -231,12 +352,13 @@
     <a href="#" data-section="turnos">Turnos Generados</a>
     <a href="#" data-section="festivos">Añadir Festivos</a>
     <a href="#" data-section="calendario">Calendario</a>
+    <a href="#" data-section="cambioturno">Cambio de Turno</a>
   </nav>
 
   <div class="controls">
-    <button id="btnPrev">« </button>
+    <button id="btnPrev">« <!--Anterior--></button>
     <span id="tituloMes"></span>
-    <button id="btnNext"> »</button>
+    <button id="btnNext"><!--Siguiente--> »</button>
   </div>
 
   <!-- CALENDARIO -->
@@ -278,12 +400,12 @@
   </div>
 
   <!-- SECCIÓN TURNOS -->
-  <div id="seccionTurnos"style="display:none; padding: 20px; background:#fff;">
+  <div id="seccionTurnos" style="display:none; padding: 20px; background:#fff;">
     <div class="tabla-responsive">
     <h2>Turnos Generados</h2>
-    <table id="tablaTurnos"border="1" style="width:100%; border-collapse: collapse;">
+    <table id="tablaTurnos" border="1" style="width:100%; border-collapse: collapse;">
       <thead>
-        <tr><th>Fecha</th><th>Hora</th><th>Tipo</th><th>Nota</th><th>Eliminar</th></tr>
+        <tr><th>Fecha</th><th>Hora</th><th>Tipo</th><th>Nota</th><th>Eliminar</th>
       </thead>
       <tbody></tbody>
     </table>
@@ -300,19 +422,42 @@
       <input type="text" id="notaFestivo" placeholder="Ej: Día de la Constitución" />
       <button type="submit">Añadir Festivo</button>
     </form>
-
     <table id="tablaFestivos" border="1" style="width:100%; border-collapse: collapse; margin-top: 20px;">
       <thead>
         <tr><th>Fecha</th><th>Descripción</th><th>Eliminar</th></tr>
       </thead>
       <tbody></tbody>
     </table>
+  </div>
 
-    
+  <!---SECCION CAMBIO DE TURNO--------->
+ <section id="cambioturno" class="cambioturno" style="display: none;">
+  <h2>Cambio de Turno</h2>
+  <form id="formcambioturno">
+    <label for="fechacambioturno">Fecha:</label>
+    <input type="date" id="fechacambioturno" required />
+
+    <label for="descripcioncambioturno">Notas:</label>
+    <input type="text" id="descripcioncambioturno" placeholder="Ej: Mañana por Tarde" required />
+
+    <button type="submit">Cambiar Turno</button>
+  </form>
+
+  <table id="tablacambioturno">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Descripción</th>
+      <th>Eliminar</th>
+    </tr>
+  </thead>
+  <tbody id="tbodycambioturno"></tbody>
+</table>
+</section>
+
   <footer>
     &copy; Made with <img width="20" height="20" src="https://img.icons8.com/metro/26/FA5252/hearts.png" alt="hearts"/> for TurnosApp 2025.
   </footer>
-
   <!-- --------------------------------JAVASCRIPT-------------------------- -->
   <script>
     const calendario = document.getElementById("calendario");
