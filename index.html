@@ -34,9 +34,9 @@
       display: inline-block;
     }
     .logo {
-      width: 60px;
+      width: 40px;
       vertical-align: auto;
-      margin-left: 60px;
+      margin-left: 90px;
     }
     nav {
       position: fixed;
@@ -460,6 +460,7 @@
   </footer>
   <!-- --------------------------------JAVASCRIPT-------------------------- -->
   <script>
+     
     const calendario = document.getElementById("calendario");
     const seccionCalendario = document.getElementById("seccionCalendario");
     const seccionFestivos = document.getElementById("seccionFestivos");
@@ -479,8 +480,9 @@
     const formFestivo = document.getElementById("formFestivo");
     const fechaFestivo = document.getElementById("fechaFestivo");
     const notaFestivo = document.getElementById("notaFestivo");
-
+    
     let turnos = JSON.parse(localStorage.getItem("turnos")) || {};
+    let cambiosTurno = JSON.parse(localStorage.getItem("cambiosTurno")) || [];  //para almacenar cambios de turno//
     let fechaActual = new Date();
 
     function toggleMenu() {
@@ -592,15 +594,14 @@
     function renderizarTurnos() {
       tablaTurnos.innerHTML = "";
       const fechas = Object.keys(turnos).sort();
-      for (const fecha of fechas) {
-        const t = turnos[fecha];
-        const fila = document.createElement("tr");
-        const [y, m, d] = fecha.split("-");
-        const fechaFormateada = `${d}/${m}/${y}`;
+       for (const fecha of fechas) {
+         const t = turnos[fecha];
+         const fila = document.createElement("tr");
+         const [y, m, d] = fecha.split("-");
+         const fechaFormateada = `${d}/${m}/${y}`;
         fila.innerHTML = `<td>${fechaFormateada}</td><td>${t.hora}</td><td>${t.tipo}</td><td>${t.nota}</td>
-        <td><button onclick="eliminarTurno('${fecha}')">🗑️</button></td>`;
-
-        tablaTurnos.appendChild(fila);
+        <td><button onclick="eliminarTurno('${fecha}')">🗑️</button></td> `;
+      tablaTurnos.appendChild(fila);
       }
     }
 
@@ -648,15 +649,177 @@
       turnos[fecha] = {
         tipo: "V",
         hora: "",
-        nota: notaFestivo.value,
+        nota: notaFestivo.value,    // No modificar datos, funciona asi//
       };
       localStorage.setItem("turnos", JSON.stringify(turnos));
       renderizarFestivos();
       fechaFestivo.value = "";
-      notaFestivo.value = "";
-    };
+      notaFestivo.value = "";  //Añado este valor, para comprobar funciomaniento//
+   };
+    
+  renderizarCalendario();
+  </script>
 
-    renderizarCalendario();
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/misturno/service-worker.js")
+          .then(reg => console.log("Service Worker registrado", reg))
+          .catch(err => console.error("Error al registrar Service Worker", err));
+      });
+    }
+  
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('formcambioturno');
+  const tablaBody = document.querySelector('#tablacambioturno tbody');
+
+  // Cargar datos desde localStorage al iniciar
+  let cambiosTurno = JSON.parse(localStorage.getItem('cambiosTurno')) || [];
+  renderTabla();
+
+  // Manejo del envío del formulario
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const fecha = document.getElementById('fechacambioturno').value;
+    const nota = document.getElementById('notacambioturno').value.trim() || 'Sin nota';
+
+    if (!fecha) {
+      alert('Por favor, seleccione una fecha.');
+      return;
+    }
+
+    // Agregar nuevo cambio
+    cambiosTurno.push({ fecha, nota });
+    localStorage.setItem('cambiosTurno', JSON.stringify(cambiosTurno));
+
+    renderTabla();
+    form.reset();
+  });
+
+  // Eliminar cambio
+  tablaBody.addEventListener('click', function (e) {
+    if (e.target.classList.contains('eliminar')) {
+      const index = e.target.dataset.index;
+      if (confirm('¿Deseas eliminar este cambio de turno?')) {
+        cambiosTurno.splice(index, 1);
+        localStorage.setItem('cambiosTurno', JSON.stringify(cambiosTurno));
+        renderTabla();
+      }
+    }
+  });
+
+  // Función para renderizar la tabla
+  function renderTabla() {
+    tablaBody.innerHTML = '';
+    cambiosTurno.forEach((item, index) => {
+      const fila = document.createElement('tr');
+      fila.innerHTML = `
+        <td>${item.fecha}</td>
+        <td>${item.nota}</td>
+        <td><button class="eliminar" data-index="${index}">Eliminar</button></td>
+      `;
+      tablaBody.appendChild(fila);
+    });
+  }
+});
+
+  // --------------------------CAMBIO DE TURNO--------------------------------------------------------//
+
+document.querySelectorAll("nav a").forEach(link => {
+  link.addEventListener("click", e => {
+    e.preventDefault();
+    const section = link.dataset.section;
+    menu.classList.remove("open");
+
+    // Ocultar todas las secciones
+    seccionFestivos.style.display = "none";
+    seccionTurnos.style.display = "none";
+    seccionCalendario.style.display = "none";
+    seccionCambioTurno.style.display = "none"; // <-- Oculta cambio de turno también
+    controles.style.display = "none";
+
+    if (section === "festivos") {
+      seccionFestivos.style.display = "block";
+      renderizarFestivos();
+    } else if (section === "turnos") {
+      seccionTurnos.style.display = "block";
+      renderizarTurnos();
+    } else if (section === "calendario") {
+      seccionCalendario.style.display = "block";
+      controles.style.display = "flex";
+    } else if (section === "cambioturno") {
+      seccionCambioTurno.style.display = "block"; // <-- Mostrar sección Cambio de Turno
+    }
+  });
+});
+  const seccionCambioTurno = document.getElementById("cambioturno"); // <-- Agrega esta línea
+ 
+  const tbodyCambioTurno = document.getElementById("tbodycambioturno");
+  const formCambioTurno = document.getElementById("formcambioturno");
+
+  const fechaInput = document.getElementById("fechacambioturno");
+  const descripcionInput = document.getElementById("descripcioncambioturno");
+
+ 
+  let cambioTurno = JSON.parse(localStorage.getItem("cambioturno")) || []; //Cargar los cambios desde localStorage 
+  //renderizarcambioturno(); // Mostrar al inicio
+  
+function formatearFecha(fecha) {
+    const [y, m, d] = fecha.split("-");
+    return `${d}/${m}/${y}`;
+  }
+
+  function renderizarCambioTurno() {
+    tbodyCambioTurno.innerHTML = ""; // Limpia la tabla
+    cambiosTurno.forEach((cambio, index) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${formatearFecha(cambio.fecha)}</td>
+        <td>${cambio.descripcion}</td>
+        <td><button onclick="eliminarCambioTurno(${index})">🗑️</button></td>
+      `;
+      tbodyCambioTurno.appendChild(tr);
+    });
+  }
+
+  function guardarCambioTurno(fecha, descripcion) {
+    if (cambiosTurno.some(c => c.fecha === fecha)) {
+      alert("Ya existe un cambio de turno para esa fecha.");
+      return;
+    }
+
+    cambiosTurno.push({ fecha, descripcion });
+    localStorage.setItem("cambioturno", JSON.stringify(cambiosTurno));
+    renderizarCambioTurno();
+  }
+
+  function eliminarCambioTurno(index) {
+    if (confirm("¿Eliminar este cambio de turno?")) {
+      cambiosTurno.splice(index, 1);
+      localStorage.setItem("cambioturno", JSON.stringify(cambiosTurno));
+      renderizarCambioTurno();
+    }
+  }
+
+  formCambioTurno.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const fecha = document.getElementById("fechacambioturno").value;
+    const descripcion = document.getElementById("descripcioncambioturno").value;
+
+    if (!fecha || !descripcion) {
+      alert("Completa todos los campos.");
+      return;
+    }
+    
+    guardarCambioTurno(fecha, descripcion);
+    fechaInput.value = '';
+    descripcionInput.value = '';
+  });
+
+  // Mostrar al cargar
+  renderizarCambioTurno();
+  
   </script>
 
   <script>
