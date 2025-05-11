@@ -8,8 +8,6 @@
   <meta name="theme-color" content="#2f4e37" />
   <link rel="icon" href="assets/icono-app38x46.png" type="image/png">
   <style>
-
-
     * {
       box-sizing: border-box;
     }
@@ -20,12 +18,49 @@
       padding: 0;
       overflow-x: hidden;
     }
+    /* Header  */
     header, footer {
       text-align: center;
       background-color: #567964;
+      justify-content: space-between;
       color: white;
       padding: 10px;
+      flex-wrap: wrap;
     }
+    /* Título */
+   header h1 {
+    font-size: 1.5rem;
+    flex: 1;
+    text-align: center;
+    margin: 10px 0;
+   }
+
+    /* Menú (si usas nav o ul) */
+    header nav {
+     display: flex;
+     gap: 15px;
+   }
+
+/* Responsive header para pantallas pequeñas */
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  header h1 {
+    font-size: 1.2rem;
+  }
+
+  header nav {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin-top: 10px;
+  }
+}
+/*--------------------fin style elementos  header pantalla pequeña----*/
+    
     .menu-toggle {
       font-size: 24px;
       cursor: pointer;
@@ -36,7 +71,7 @@
     .logo {
       width: 38px;
       vertical-align: auto;
-      margin-left: 0px;
+      margin-rigth: 10px;
     }
     nav {
       position: fixed;
