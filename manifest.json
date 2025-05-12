@@ -1,0 +1,17 @@
+{
+  "name": "TurnosApp",
+  "short_name": "Turnos",
+  "description": "Gestión de turnos y calendario laboral",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#d8e9dc",
+  "theme_color": "#2f4e37",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/icono-app38x46.png",
+      "sizes": "38x46",
+      "type": "image/png"
+    }
+  ]
+}
