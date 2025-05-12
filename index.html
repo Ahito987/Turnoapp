@@ -891,13 +891,14 @@ function formatearFecha(fecha) {
   </script>
 
   <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/misturno/service-worker.js")
-          .then(reg => console.log("Service Worker registrado", reg))
-          .catch(err => console.error("Error al registrar Service Worker", err));
-      });
-    }
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("sw.js")
+        .then(() => console.log("Service Worker registrado correctamente"))
+        .catch((err) => console.error("Error al registrar SW:", err));
+    });
+  }
   </script>
 </body>
 </html>
