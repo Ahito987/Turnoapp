@@ -1,4 +1,4 @@
-const CACHE_NAME = "turnosapp-v1";
+const CACHE_NAME = "TurnosApp-v1";
 const urlsToCache = [
   "/",
   "/index.html",
